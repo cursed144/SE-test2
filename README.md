@@ -43,3 +43,16 @@ temporarily change the primary URL in config.py to an invalid endpoint
 run the app again
 the app should use the secondary backend
 /metrics should show fallback_total 1.0
+
+## Task 3: JSON logs
+
+The application logs every fallback event in JSON format.
+
+Each fallback log contains:
+- timestamp
+- log level
+- message
+- logger name
+- extra data such as the primary backend error and fallback target
+
+This makes fallback events easier to monitor and analyze.
