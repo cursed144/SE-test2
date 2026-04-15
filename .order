@@ -1,0 +1,9 @@
+.vscode
+services
+backend
+main.py
+config.py
+metrics.py
+exceptions.py
+requirements.txt
+README.md
