@@ -1,6 +1,6 @@
 # SE-test
 
-Python project that implements a **fallback mechanism** between two backends and exposes **Prometheus metrics**.
+Python project that implements a fallback mechanism between two backends and exposes Prometheus metrics.
 
 ## Backends
 
@@ -9,10 +9,9 @@ Python project that implements a **fallback mechanism** between two backends and
 
 ## Task 1: Fallback
 
-The application first requests data from the **primary backend**.  
-If it fails, it automatically switches to the **secondary backend**.
+The application first requests data from the primary backend. If it fails, it automatically switches to the secondary backend.
 
-Returned data is normalized into a common format and the first 10 todos are printed.
+Returned data is normalized into a common format, and the first 10 todos are printed.
 
 ## Task 2: Prometheus metric
 
@@ -26,23 +25,28 @@ A Counter named `fallback_total` tracks how many times the fallback has been tri
 
 ```bash
 pip install -r requirements.txt
+```
 
-Run
+## Run
+
+```bash
 python main.py
-Test
+```
 
-Normal case:
+## Test
 
-run the app
-primary backend should respond
-/metrics should show fallback_total 0.0
+### Normal case
 
-Fallback case:
+- Run the app
+- The primary backend should respond
+- `/metrics` should show `fallback_total 0.0`
 
-temporarily change the primary URL in config.py to an invalid endpoint
-run the app again
-the app should use the secondary backend
-/metrics should show fallback_total 1.0
+### Fallback case
+
+- Temporarily change the primary URL in `config.py` to an invalid endpoint
+- Run the app again
+- The app should use the secondary backend
+- `/metrics` should show `fallback_total 1.0`
 
 ## Task 3: JSON logs
 
@@ -56,3 +60,11 @@ Each fallback log contains:
 - extra data such as the primary backend error and fallback target
 
 This makes fallback events easier to monitor and analyze.
+
+## Task 4: Prometheus in Docker
+
+Prometheus was started in Docker using Docker Compose and configured to scrape the application's `/metrics` endpoint.
+
+The metric `fallback_total` was successfully collected and visualized in the Prometheus UI at `http://localhost:9090`.
+
+The graph shows the counter increasing when fallback events occur. If the application is restarted, the counter returns to zero because the metric is stored in memory.

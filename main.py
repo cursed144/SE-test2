@@ -1,3 +1,4 @@
+import time
 from prometheus_client import start_http_server
 
 from config import METRICS_PORT
@@ -9,23 +10,14 @@ def main() -> None:
     start_http_server(METRICS_PORT)
     print(f"Prometheus metrics available at: http://localhost:{METRICS_PORT}/metrics")
 
-    try:
-        todos = fetch_todos_with_fallback()
-        print(f"\nSuccessfully fetched {len(todos)} todos.\n")
+    while True:
+        try:
+            todos = fetch_todos_with_fallback()
+            print(f"Fetched {len(todos)} todos. First source: {todos[0]['source']}")
+        except BackendError as e:
+            print(f"Error: {e}")
 
-        for todo in todos[:10]:
-            print(
-                f"ID: {todo['id']}, "
-                f"Title: {todo['title']}, "
-                f"Completed: {todo['completed']}, "
-                f"Source: {todo['source']}"
-            )
-
-        input("\nPress Enter to exit...\n")
-
-    except BackendError as e:
-        print(f"Error: {e}")
-        input("\nPress Enter to exit...\n")
+        time.sleep(5)
 
 
 if __name__ == "__main__":
